@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-c0e7d7f45c0c0a49cdfc59fdf8d1531a6dbaab29",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.9.0"
+  },
+  "userSourceNameMap": {
+    "contracts/SeminarCertificate.sol": "project/contracts/SeminarCertificate.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/SeminarCertificate.sol": {
+        "content": "// SPDX-License-Identifier: SEE LICENSE IN LICENSE\r\npragma solidity ^0.8.0;\r\n\r\ncontract SeminarCertificate {\r\n    \r\n    struct Record {\r\n        string certificateNumber; \r\n        uint256 timestamp;\r\n        bool isVerified;\r\n    }\r\n\r\n    mapping(string => Record) private registry;\r\n\r\n    event CertificateIssued(string certHash, string certNumber);\r\n\r\n    function issue(string memory _hash, string memory _certNumber) public {\r\n        require(!registry[_hash].isVerified, \"Sertifikat sudah ada\");\r\n        \r\n        registry[_hash] = Record({\r\n            certificateNumber: _certNumber,\r\n            timestamp: block.timestamp,\r\n            isVerified: true\r\n        });\r\n\r\n        emit CertificateIssued(_hash, _certNumber);\r\n    }\r\n    function verify(string memory _hash) public view returns (bool, string memory, uint256) {\r\n        Record memory rec = registry[_hash];\r\n        return (rec.isVerified, rec.certificateNumber, rec.timestamp);\r\n    }\r\n}"
+      }
+    }
+  }
+}
